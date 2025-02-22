@@ -1,12 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
-import pokemon from "./pokemon.json";
+
 import PropTypes from "prop-types";
 const PokemonRow = ({ pokemon, onSelect }) => (
   // component này chịu trách nhiệu render
   <tr>
     <td>{pokemon.name.english}</td>
-    <td>{pokemon.type.join(", ")}</td>
+    <td>{pokemon?.type.join(", ")}</td>
     <td>
       <button onClick={() => onSelect(pokemon)}>Select !</button>
     </td>
@@ -62,6 +62,14 @@ function App() {
   const [filter, setFilter] = useState("");
   // khi khách hàng chọn 1 pokemon nên chon 1 trạng thái khác
   const [selectedItem, setSelectedItem] = useState(null);
+  const [pokemon, setPokemon] = useState([]);
+
+  // thay đổi dựa vào bộ lọc
+  useEffect(() => {
+    fetch("http://localhost:3000/starting-react/pokemon.json")
+      .then((resp) => resp.json())
+      .then((data) => setPokemon(data));
+  }, [filter]);
   return (
     <div
       style={{
