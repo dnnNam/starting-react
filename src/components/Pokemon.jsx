@@ -4,7 +4,9 @@ import PokemonContext from "../PokemonContext";
 
 // sau khi bấm select sẽ show ra thông tin của pokemon
 const PokemonInfor = () => {
-  const { selectedItem } = useContext(PokemonContext);
+  const {
+    state: { selectedItem },
+  } = useContext(PokemonContext);
   return selectedItem ? (
     <div>
       <h1>{selectedItem.name.english}</h1>

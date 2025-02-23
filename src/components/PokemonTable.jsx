@@ -2,7 +2,10 @@ import React, { useContext } from "react";
 import PokemonRow from "./PokemonRow";
 import PokemonContext from "../PokemonContext";
 const PokemonTable = () => {
-  const { filter, pokemon, setSelectedItem } = useContext(PokemonContext);
+  const {
+    state: { filter, pokemon },
+    dispatch,
+  } = useContext(PokemonContext);
   return (
     <table width="100%">
       <tbody>
@@ -16,7 +19,11 @@ const PokemonTable = () => {
               key={pokemon.id}
               pokemon={pokemon}
               onSelect={
-                (pokemon) => setSelectedItem(pokemon)
+                (pokemon) =>
+                  dispatch({
+                    type: "SET_SELECTED_ITEM",
+                    payload: pokemon,
+                  })
                 // trên hàm render thêm 1 nút select
                 // nếu bấm vào select thì sẽ trả ra con pokemon đó
               }
