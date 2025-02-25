@@ -1,38 +1,41 @@
-import { create } from "zustand";
+import { makeAutoObservable, observable, computed } from "mobx";
 
-const useStore = create((set) => ({
-  pokemon: [],
-  filter: "",
-  selectedItem: null,
-  setPokemon: (pokemon) =>
-    set((state) => ({
-      ...state,
-      pokemon,
-      //
-    })),
-  setFilter: (filter) =>
-    set((state) => ({
-      ...state,
-      filter,
-      //
-    })),
+class Store {
+  pokemon = [];
+  filter = "";
+  selectedItem = null;
 
-  setSelectedItem: (selectedItem) =>
-    set((state) => ({
-      ...state,
-      selectedItem,
-      //
-    })),
-}));
+  constructor() {
+    makeAutoObservable(this, {
+      pokemon: observable,
+      filter: observable,
+      selectedItem: observable,
+      filteredPokemon: computed,
+    });
+  }
+
+  get FilteredPokemon() {
+    return this.pokemon.filter(({ name: { english } }) =>
+      english.toLocaleLowerCase().includes(this.filter.toLocaleLowerCase())
+    );
+  }
+  setPokemon(pokemon) {
+    this.pokemon = pokemon;
+  }
+
+  setFilter(filter) {
+    this.filter = filter;
+  }
+
+  setSelectedItem(selectedItem) {
+    this.selectedItem = selectedItem;
+  }
+}
+
+const store = new Store();
 
 fetch("http://localhost:3000/starting-react/pokemon.json")
   .then((resp) => resp.json())
-  .then((pokemon) =>
-    useStore.setState((state) => ({
-      ...state,
-      pokemon,
-      //
-    }))
-  );
+  .then((pokemon) => store.setPokemon(pokemon));
 
-export default useStore;
+export default store;

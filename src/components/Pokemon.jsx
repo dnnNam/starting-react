@@ -1,19 +1,18 @@
 import React from "react";
 import PokemonType from "../PokemonType";
-import useStore from "../store";
-
+import store from "../store";
+import { observer } from "mobx-react";
 // sau khi bấm select sẽ show ra thông tin của pokemon
 const PokemonInfor = () => {
-  const selectedItem = useStore((state) => state.selectedItem);
-  return selectedItem ? (
+  return store.selectedItem ? (
     <div>
-      <h1>{selectedItem.name.english}</h1>
+      <h1>{store.selectedItem.name.english}</h1>
       <table>
         <tbody>
-          {Object.keys(selectedItem.base).map((key) => (
+          {Object.keys(store.selectedItem.base).map((key) => (
             <tr key={key}>
               <td>{key}</td>
-              <td>{selectedItem.base[key]}</td>
+              <td>{store.selectedItem.base[key]}</td>
             </tr>
           ))}
         </tbody>
@@ -29,4 +28,4 @@ const PokemonInfor = () => {
 // định ngĩa component
 PokemonInfor.propTypes = PokemonType;
 
-export default PokemonInfor;
+export default observer(PokemonInfor);
