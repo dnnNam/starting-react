@@ -1,12 +1,11 @@
-import React, { useContext } from "react";
+import React from "react";
+import { useSelector } from "react-redux";
 import PokemonType from "../PokemonType";
-import PokemonContext from "../PokemonContext";
 
 // sau khi bấm select sẽ show ra thông tin của pokemon
 const PokemonInfor = () => {
-  const {
-    state: { selectedItem },
-  } = useContext(PokemonContext);
+  const selectedItem = useSelector((state) => state.selectedItem);
+
   return selectedItem ? (
     <div>
       <h1>{selectedItem.name.english}</h1>
