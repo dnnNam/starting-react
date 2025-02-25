@@ -1,11 +1,10 @@
 import React from "react";
 import PokemonRow from "./PokemonRow";
-import { useDispatch, useSelector } from "react-redux";
-
+import useStore from "../store";
 const PokemonTable = () => {
-  const dispatch = useDispatch();
-  const pokemon = useSelector((state) => state.pokemon);
-  const filter = useSelector((state) => state.filter);
+  const pokemon = useStore((state) => state.pokemon);
+  const filter = useStore((state) => state.filter);
+  const setSelectedItem = useStore((state) => state.setSelectedItem);
 
   return (
     <table width="100%">
@@ -20,11 +19,8 @@ const PokemonTable = () => {
               key={pokemon.id}
               pokemon={pokemon}
               onSelect={
-                (pokemon) =>
-                  dispatch({
-                    type: "SET_SELECTED_ITEM",
-                    payload: pokemon,
-                  })
+                (pokemon) => setSelectedItem(pokemon)
+
                 // trên hàm render thêm 1 nút select
                 // nếu bấm vào select thì sẽ trả ra con pokemon đó
               }
